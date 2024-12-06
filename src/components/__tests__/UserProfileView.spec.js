@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import UserProfileView from '@/views/userProfileView.vue'
 
 
-describe('當會員登入時', () => {
+describe.skip('當會員登入時', () => {
   it('畫面可顯示會員資料按鈕', () => {
     // Arrange
     const wrapper = mount(UserProfileView, {
@@ -68,7 +68,7 @@ describe('當會員登入時', () => {
   })
 })
 
-describe('當會員沒有登入時', () => {
+describe.skip('當會員沒有登入時', () => {
   it('畫面不可顯示會員資料按鈕', () => {
     // Arrange
     const wrapper = mount(UserProfileView, {

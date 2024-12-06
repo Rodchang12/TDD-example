@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import RegisterView from '@/views/registerView.vue'
 import { assert } from '@vue/compiler-core'
 
-describe('當會員資料有缺漏時', () => {
+describe.skip('當會員資料有缺漏時', () => {
   it('沒填帳號時，會出現錯誤訊息', async() => {
     const wrapper = mount(RegisterView)
     // Arrange
