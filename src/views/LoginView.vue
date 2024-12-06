@@ -77,5 +77,19 @@ const handleSubmit = () => {
     if (form.email === user.email && form.password === user.password) {
         success.value = '登入成功'
     }
+    else {
+        error.value = '信箱或密碼錯誤'
+        loginAttempts.value++
+        if (loginAttempts.value >= MAX_ATTEMPTS) {
+            isLocked.value = true
+            error.value = '鎖定帳號15分鐘'
+            setTimeout(() => {
+                isLocked.value = false
+                loginAttempts.value = 0
+            }, LOCK_TIME)
+        } else{
+            error.value = '信箱或密碼錯誤'
+        }
+    }
 }
 </script>

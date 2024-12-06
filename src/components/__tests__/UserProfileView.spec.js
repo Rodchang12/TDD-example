@@ -1,6 +1,18 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import UserProfileView from '@/views/userProfileView.vue'
+import { assert } from '@vue/compiler-core'
+import { Polly } from '@pollyjs/core';
+import FetchAdapter from '@pollyjs/adapter-fetch';
+import LocalStoragePersister from '@pollyjs/persister-local-storage';
+import fetch, {Request, Response} from 'node-fetch';
+
+global.fetch = fetch;
+global.Request = Request;
+global.Response = Response;
+
+Polly.register(LocalStoragePersister);
+Polly.register(FetchAdapter);
 
 
 describe.skip('當會員登入時', () => {
@@ -109,4 +121,35 @@ describe.skip('當會員沒有登入時', () => {
     // Assert
     expect(wrapper.find('[data-test="profile-data"]').exists()).toBe(false)
   })
+})
+
+describe('當會員要編輯資料時', async() => {
+  const polly = new Polly('取得會員資料', {
+      adapters: ['fetch'],
+      persister: 'local-storage',
+      logLevel: 'info',
+      recordFailedRequests: true, 
+  });
+
+  it('可編輯成功', async() => {
+      // Arrange
+      const name = "morpheus"
+      const job = "leader"
+      // Act
+      const response = await fetch('https://reqres.in/api/users', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              name: name,
+              job: job
+          }),
+      })
+      const data = await response.json()
+      // Assert
+      expect(response.status).to.equal(201)
+      expect(data.name).to.equal("morpheus")
+  })
+      await polly.stop()
 })
